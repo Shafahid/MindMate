@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
@@ -9,17 +9,32 @@ import { Menu, X, ChevronDown, Brain } from 'lucide-react'
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      setIsScrolled(scrollTop > 10)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navigationLinks = [
     { name: 'Home', href: '/home' },
     { name: 'Features', href: '/features' },
     { name: 'How it works', href: '/how-it-works' },
-    { name: 'Why MindMate', href: '/why-mindmate' },
     { name: 'Blogs', href: '/blog' },
+    { name: 'FAQs', href: '/why-mindmate' },
   ]
 
   return (
-  <nav className="w-full bg-gradient-to-r from-purple-50 via-pink-50 to-purple-100 border-b border-purple-100/50 sticky top-0 z-50 font-sans">
+  <nav className={`w-full border-b border-purple-100/50 sticky top-0 z-50 font-sans transition-all duration-300 ${
+    isScrolled 
+      ? 'bg-white/80 backdrop-blur-md shadow-lg' 
+      : 'bg-gradient-to-r from-purple-50/50 via-pink-50/50 to-purple-100'
+  }`}>
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 lg:h-18">
           
@@ -34,8 +49,8 @@ function Navbar() {
                   width={70}
                   height={32}
                 />
-                <span className="font-sans font-bold text-xl text-gray-800 -ml-4">
-                 <Image src="/mindmate1.png" alt="MindMate Logo" width={160} height={32} />
+                <span className="font-sans font-semibold text-xl text-gray-800">
+                 <h3 className="text-2xl font-bold text-gray-900">Mind<span className="text-violet-600">Mate</span></h3>
                 </span>
               </div>
             </Link>
@@ -47,7 +62,7 @@ function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="font-sans text-gray-700 hover:text-purple-700 font-medium text-sm transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-white/50"
+                className="font-sans text-gray-700 hover:text-purple-700 font-medium text-md transition-colors duration-200 px-3 py-2 rounded-lg hover:text-lg"
               >
                 {link.name}
               </Link>
@@ -60,7 +75,9 @@ function Navbar() {
            
 
             {/* Subscribe Button */}
-            <Button className="font-sans bg-white hover:bg-gray-50 text-purple-700 border border-purple-200 px-6 py-2 rounded-full font-medium text-sm transition-all duration-200 shadow-sm hover:shadow-md">
+            <Button 
+            onClick={() => window.location.href = '/signup'}
+            className="font-sans bg-white/50 hover:bg-gray-50 text-purple-700 border-2 border-white px-6 py-2 rounded-full font-medium text-md transition-all duration-200 shadow-sm hover:shadow-md">
               Get Started
             </Button>
           </div>
