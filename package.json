@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "lottie-react": "^2.4.1"
+    "lottie-react": "^2.4.1",
+    "react-hot-toast": "^2.6.0"
   }
 }
