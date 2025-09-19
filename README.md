@@ -21,6 +21,7 @@ MindMate is a full-stack mental health companion platform designed to help users
 
 ---
 
+
 ## Tech Stack
 
 - **Frontend**: Next.js (React), TypeScript, Recharts, ReactMarkdown, Supabase JS, Tailwind CSS
@@ -28,6 +29,29 @@ MindMate is a full-stack mental health companion platform designed to help users
 - **Database**: Supabase/PostgreSQL
 - **Auth**: Supabase Auth
 - **Deployment**: Docker, Docker Compose
+
+---
+
+## Hugging Face Models Used
+
+### Moderation (Toxicity/Hate Speech)
+- `unitary/toxic-bert`
+- `Hate-speech-CNERG/bert-base-uncased-hate-speech`
+- `Hate-speech-CNERG/dehatebert-mono-english`
+- `cointegrated/rubert-toxic-pikabu`
+
+### Sentiment/Mood Analysis
+- `distilroberta-base`
+- `cardiffnlp/twitter-roberta-base-sentiment`
+- `finiteautomata/bertweet-base-sentiment-analysis`
+
+### Chatbot Fallback
+- `tiiuae/falcon-7b-instruct`
+- `facebook/blenderbot-3B`
+- `gpt2`
+
+### Voice Transcription
+- `openai/whisper-large-v3-turbo`
 
 ---
 
