@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    container_name: mindmate-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - HF_API_KEY=${HF_API_KEY}
+    volumes:
+      - .:/app
+    restart: unless-stopped
+    # Uncomment if you want to pass .env file
+    env_file:
+      - .env
