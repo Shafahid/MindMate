@@ -34,7 +34,7 @@ export default function SignInPage() {
       alert(error.message)
     } else if (data.user) {
       alert('Login successful!')
-      router.push('/') // redirect to dashboard or home page
+      router.push('/dashboard') // redirect to dashboard or home page
     }
   }
 
