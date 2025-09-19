@@ -1,3 +1,4 @@
+
 from pydantic import BaseModel, Field as PydanticField
 from typing import Optional
 class PeerPostRequest(BaseModel):
@@ -21,9 +22,13 @@ class MoodEntryResponse(BaseModel):
     mood_label: str
     confidence: float
 
+class ChatMessage(BaseModel):
+    sender: str = PydanticField(..., description="Sender: 'user' or 'ai'")
+    text: str = PydanticField(..., min_length=1, description="Message text.")
+
 class ChatRequest(BaseModel):
     user_id: Optional[str] = PydanticField(None, description="User ID")
-    message: str = PydanticField(..., min_length=1, description="User's chat message. Can include emojis.")
+    messages: list[ChatMessage] = PydanticField(..., description="Last 5 messages for context.")
 
 class ChatResponse(BaseModel):
     chat_id: str
@@ -34,3 +39,9 @@ class VoiceChatResponse(BaseModel):
     chat_id: str
     transcribed_text: str
     ai_response: str
+
+# Comment moderation request
+class CommentRequest(BaseModel):
+    user_id: Optional[str] = PydanticField(None, description="User ID")
+    post_id: str = PydanticField(..., description="Post ID the comment belongs to.")
+    content: str = PydanticField(..., min_length=1, description="Comment text to be moderated.")

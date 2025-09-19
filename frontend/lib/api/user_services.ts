@@ -1,3 +1,23 @@
+// Comment moderation API service
+export async function submitComment(content: string, postId: string, userId?: string): Promise<{ status?: string; comment_id?: string; reason?: string; model_label?: string; confidence?: number; error?: string }> {
+	const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+	try {
+		const res = await fetch(`${backendUrl}/comment`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ content, post_id: postId, user_id: userId }),
+		});
+		const data = await res.json();
+		if (!res.ok) {
+			return { error: data?.error || data?.reason || 'Comment failed' };
+		}
+		return data;
+	} catch (err: any) {
+		return { error: err.message || 'Network error' };
+	}
+}
 // Moodboard API service
 export async function submitMood(moodText: string, userId?: string): Promise<{ status?: string; entry_id?: string; label?: string; confidence?: number; reason?: string; error?: string }> {
 	const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
@@ -59,7 +79,7 @@ export async function sendVoiceMessage(file: File, userId?: string): Promise<{ c
 	}
 }
 // Chatbot API service
-export async function sendChatMessage(message: string, userId?: string): Promise<{ chat_id?: string; response?: string; error?: string }> {
+export async function sendChatMessage(messages: Array<{ sender: string; text: string }>, userId?: string): Promise<{ chat_id?: string; response?: string; error?: string }> {
 	const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 	try {
 		const res = await fetch(`${backendUrl}/chat`, {
@@ -67,7 +87,7 @@ export async function sendChatMessage(message: string, userId?: string): Promise
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ message, user_id: userId }),
+			body: JSON.stringify({ messages, user_id: userId }),
 		});
 		if (!res.ok) {
 			const errorData = await res.json();
