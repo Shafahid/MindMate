@@ -56,63 +56,67 @@ const itemVariants = {
 
 function HowItWorks() {
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-purple-50 to-transparent">
+    <section id="how-it-works" aria-labelledby="how-it-works-heading" className="w-full scroll-mt-24 py-24 bg-gradient-to-b from-purple-50/70 to-transparent">
       <div className="container mx-auto px-4 max-w-7xl">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 id="how-it-works-heading" className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-5">
             How It <span className="text-[#5e2bf5]">Works</span>
           </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Anonymous, affordable, and culturally sensitive mental health support for Bangladeshi students aged 16-25
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Anonymous, affordable, and culturally sensitive mental health support for Bangladeshi students aged 16–25.
           </p>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Brain Circuit Visual */}
-          <div>
-            <img
+          {/* Illustration */}
+          <div className="relative">
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-violet-200/60 via-fuchsia-100/40 to-indigo-100/30 blur-2xl -z-10" aria-hidden="true" />
+            <Image
               src="/howirworks.png"
-              alt="Brain Circuit"
-              className="mx-auto w-full max-w-xl rounded-2xl shadow-lg"
+              alt="Abstract illustration representing AI support, peer connection, and resources"
+              width={900}
+              height={700}
+              priority
+              className="mx-auto w-full max-w-xl rounded-3xl shadow-xl ring-1 ring-black/5"
             />
           </div>
 
           {/* Steps */}
-          <motion.div
+          <motion.ol
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
-            className="space-y-8 bg-violet-100 p-6 rounded-2xl lg:p-12"
+            className="space-y-6 bg-white/70 backdrop-blur-sm p-6 rounded-3xl lg:p-10 shadow-sm ring-1 ring-black/5"
           >
-            {steps.map((step, index) => (
-              <motion.div
-                key={index}
+            {steps.map((step) => (
+              <motion.li
+                key={step.id}
                 variants={itemVariants}
-                className="flex items-start space-x-3 bg-white/60 p-4 rounded-xl transition-shadow duration-300"
+                className="group flex items-start gap-4 rounded-2xl border border-transparent bg-gradient-to-r from-violet-50/60 via-white to-white p-5 transition-shadow hover:shadow-md hover:border-violet-200"
               >
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-r from-violet-300 to-gray-200 rounded-xl flex items-center justify-center text-gray-800 font-extralight text-3xl">
+                  <div className="w-14 h-14 bg-gradient-to-br from-violet-500 to-indigo-500 text-white rounded-2xl flex items-center justify-center text-2xl font-semibold shadow-md ring-1 ring-black/10">
                     {step.number}
                   </div>
                 </div>
                 <div className="flex-1 pt-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-1 tracking-tight">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                     {step.description}
                   </p>
                 </div>
-              </motion.div>
+              </motion.li>
             ))}
-          </motion.div>
+          </motion.ol>
         </div>
       </div>
     </section>
