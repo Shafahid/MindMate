@@ -118,7 +118,7 @@ const FAQCard = ({ item, index }: { item: typeof items[0]; index: number }) => {
 
 export default function Faq1() {
   return (
-    <section className="py-12 md:py-16 ">
+    <section className="py-12 md:py-16 " id="faqs">
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         <div className="mb-10 text-center">
           <motion.h2

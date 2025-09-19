@@ -72,7 +72,7 @@ def build_prompt(messages: list, user_id: str = None) -> str:
     for msg in messages[-5:]:
         sender = "Student" if getattr(msg, "sender", None) == "user" else "MindMate"
         text = getattr(msg, "text", "")
-        history += f"{sender} says: {text}\n"
+        history += f"{sender} :{text}\n"
     return f"{system_prompt}\n{user_context}{history}"
 
 

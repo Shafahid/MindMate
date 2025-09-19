@@ -1,3 +1,17 @@
+
+import { supabase } from '../supabase'
+// Fetch mood entries for a user
+// Fetch mood entries for a user (schema: id, user_id, mood_value, created_at)
+export async function fetchUserMoodEntries(userId: string): Promise<any[]> {
+	const { data, error } = await supabase
+		.from('mood_entries')
+		.select('id, user_id, mood_value, created_at')
+		.eq('user_id', userId)
+		.gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+		.order('created_at', { ascending: true })
+	if (error) throw error
+	return data || []
+}
 // Comment moderation API service
 export async function submitComment(content: string, postId: string, userId?: string): Promise<{ status?: string; comment_id?: string; reason?: string; model_label?: string; confidence?: number; error?: string }> {
 	const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';

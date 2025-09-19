@@ -7,7 +7,8 @@ import ReactMarkdown from "react-markdown";
 function ChatbotPage() {
   const [messages, setMessages] = useState<Array<{ sender: string; text: string }>>([]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState(false);
+  const [loadingVoice, setLoadingVoice] = useState(false);
   const [error, setError] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
@@ -17,12 +18,12 @@ function ChatbotPage() {
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    setLoading(true);
+    setLoadingText(true);
     setError("");
     // Prepare last 4 messages + new user message
     const contextMessages = [...messages, { sender: "user", text: input }].slice(-5);
     const res = await sendChatMessage(contextMessages);
-    setLoading(false);
+    setLoadingText(false);
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
     if (res.error) {
       setError(res.error);
@@ -66,14 +67,12 @@ function ChatbotPage() {
 
   const sendVoiceRecording = async () => {
     if (!audioBlob) return;
-    setLoading(true);
+    setLoadingVoice(true);
     setError("");
-    
     // Create a File object from the Blob
     const audioFile = new File([audioBlob], "recording.wav", { type: "audio/wav" });
-    
     const res = await sendVoiceMessage(audioFile);
-    setLoading(false);
+    setLoadingVoice(false);
     if (res.error) {
       setError(res.error);
     } else {
@@ -138,15 +137,15 @@ function ChatbotPage() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder="Type your message here..."
-            disabled={loading}
+            disabled={loadingText}
             required
           />
           <button 
             type="submit" 
             className="bg-gradient-to-r from-violet-600 to-violet-700 text-white px-6 py-3 rounded-xl font-nohemi font-semibold shadow-lg hover:from-violet-700 hover:to-violet-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105" 
-            disabled={loading || !input.trim()}
+            disabled={loadingText || !input.trim()}
           >
-            {loading ? "Sending..." : "Send"}
+            {loadingText ? "Sending..." : "Send"}
           </button>
         </form>
         
@@ -175,7 +174,7 @@ function ChatbotPage() {
               {!isRecording ? (
                 <button 
                   onClick={startRecording}
-                  disabled={loading}
+                  disabled={loadingVoice || isRecording}
                   className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-700 text-white px-6 py-3 rounded-xl font-nohemi font-semibold shadow-lg hover:from-violet-700 hover:to-violet-800 disabled:opacity-50 transition-all duration-200 transform hover:scale-105"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -216,14 +215,14 @@ function ChatbotPage() {
               <div className="flex gap-3">
                 <button 
                   onClick={sendVoiceRecording}
-                  disabled={loading}
+                  disabled={loadingVoice}
                   className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl font-nohemi font-semibold shadow-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 transition-all duration-200 transform hover:scale-105"
                 >
-                  {loading ? "Sending..." : "Send Voice Message"}
+                  {loadingVoice ? "Sending..." : "Send Voice Message"}
                 </button>
                 <button 
                   onClick={cancelRecording}
-                  disabled={loading}
+                  disabled={loadingVoice}
                   className="bg-gradient-to-r from-gray-400 to-gray-500 text-white px-6 py-3 rounded-xl font-nohemi font-semibold shadow-lg hover:from-gray-500 hover:to-gray-600 disabled:opacity-50 transition-all duration-200 transform hover:scale-105"
                 >
                   Cancel

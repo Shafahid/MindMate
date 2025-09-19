@@ -1,7 +1,7 @@
 // app/dashboard/layout.tsx
 "use client";
 import Link from "next/link";
-import { Bot, Users, LifeBuoy, BarChart2, Hammer, User, LogOut } from "lucide-react";
+import { Bot, Users, LifeBuoy, BarChart2, Hammer, User, LogOut, BarChart3 } from "lucide-react";
 
 export default function DashboardLayout({
   children,
@@ -19,6 +19,9 @@ export default function DashboardLayout({
             <span className="text-xl text-gray-800 font-light font-nohemi">Mental Health Buddy</span>
           </div>
           <nav className="flex flex-col gap-2 font-nohemi text-center ">
+            <Link href="/dashboard" className="flex items-center gap-2 px-6 py-2 rounded-md bg-white/70 hover:bg-border-200 text-gray-900 font-medium shadow transition-all">
+              <BarChart3 className="w-5 h-5" /> Dashboard
+            </Link>
             <Link href="/dashboard/chatbot" className="flex items-center gap-2 px-6 py-2 rounded-md bg-white/70 hover:bg-border-200 text-gray-900 font-medium shadow transition-all">
               <Bot className="w-5 h-5" /> Chatbot
             </Link>

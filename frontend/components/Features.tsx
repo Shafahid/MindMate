@@ -132,7 +132,7 @@ const FeatureCard = ({ feature, index }: { feature: FeatureItem; index: number }
 export default function Feature3() {
   return (
     <motion.section 
-      className="pt-20 pb-8" 
+      className="pt-20 pb-8 " 
       id="features"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}

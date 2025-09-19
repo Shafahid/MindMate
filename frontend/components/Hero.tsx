@@ -1,13 +1,41 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import Navbar from './Navbar'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import { ArrowRight, Download, Heart, Shield, Users, Brain } from 'lucide-react'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 
 function Hero() {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    // Check authentication status
+    const checkAuth = async () => {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error('Error checking auth:', error)
+        setUser(null)
+      }
+    }
+
+    checkAuth()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" id="home">
       <Navbar />
       
       {/* Hero Section with Grid Background */}
@@ -80,10 +108,10 @@ function Hero() {
           {/* CTA Buttons */}
           <div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
             <Link 
-              href="/signup"
+              href={user ? "/dashboard" : "/signup"}
               className="group inline-flex items-center px-6 py-3 text-lg font-semibold text-violet-600 transition-all duration-300 hover:from-violet-700 hover:to-[#9775fa] hover:scale-105 hover:shadow-xl border border-violet-600 rounded-md hover:bg-violet-50 bg-white/50"
             >
-              Get Started
+              {user ? "Go to Dashboard" : "Get Started"}
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
             

@@ -36,7 +36,7 @@ const cardVariants = {
 
 function Blogs() {
   return (
-    <section className="w-full py-20">
+    <section className="w-full py-20" id="blogs">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <motion.div
