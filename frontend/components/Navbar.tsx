@@ -22,7 +22,7 @@ function Navbar() {
   }, [])
 
   const navigationLinks = [
-    { name: 'Home', href: '/home' },
+    { name: 'Home', href: '/' },
     { name: 'Features', href: '/features' },
     { name: 'How it works', href: '/how-it-works' },
     { name: 'Blogs', href: '/blog' },
@@ -128,3 +128,5 @@ function Navbar() {
     </nav>
   )
 }
+
+export default Navbar
