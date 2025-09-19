@@ -1,11 +1,11 @@
+body, html {
+  font-family: var(--font-nohemi), 'Nohemi', ui-sans-serif, system-ui, sans-serif;
+}
 @import "tailwindcss";
 @import "tw-animate-css";
 
 /* Aloevera Sans Font Family */
-
-body, html {
-  font-family: 'Raleway', sans-serif;
-}
+  
 
 @custom-variant dark (&:is(.dark *));
 
