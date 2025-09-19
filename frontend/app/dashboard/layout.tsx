@@ -1,4 +1,5 @@
 // app/dashboard/layout.tsx
+"use client";
 import Link from "next/link";
 import { Bot, Users, LifeBuoy, BarChart2, Hammer, User, LogOut } from "lucide-react";
 
@@ -39,9 +40,16 @@ export default function DashboardLayout({
           <Link href="/profile" className="font-nohemi flex items-center gap-2 px-4 py-2 rounded-xl bg-white/70 hover:bg-violet-200 text-violet-700 font-medium shadow transition-all w-full justify-center">
             <User className="w-5 h-5" /> Profile
           </Link>
-          <Link href="/logout" className="font-nohemi flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow w-full justify-center">
+          <button
+            className="font-nohemi flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow w-full justify-center"
+            onClick={async () => {
+              const { signOut } = await import('../../lib/auth');
+              await signOut();
+              window.location.href = '/signin';
+            }}
+          >
             <LogOut className="w-5 h-5" /> Logout
-          </Link>
+          </button>
         </div>
       </aside>
 

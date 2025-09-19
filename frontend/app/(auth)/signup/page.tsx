@@ -22,9 +22,6 @@ function SignUpPage() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    university: "",
-    age: "",
-    phoneNumber: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -154,40 +151,6 @@ function SignUpPage() {
                     />
                   </div>
 
-                  {/* University */}
-                  <InputField
-                    id="university"
-                    name="university"
-                    icon={<GraduationCap className="h-5 w-5 text-gray-400" />}
-                    value={formData.university}
-                    onChange={handleInputChange}
-                    placeholder="Your university"
-                    label="University"
-                  />
-
-                  {/* Age & Phone */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <InputField
-                      id="age"
-                      name="age"
-                      type="number"
-                      icon={<Calendar className="h-5 w-5 text-gray-400" />}
-                      value={formData.age}
-                      onChange={handleInputChange}
-                      placeholder="Age"
-                      label="Age"
-                    />
-                    <InputField
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      type="tel"
-                      icon={<Phone className="h-5 w-5 text-gray-400" />}
-                      value={formData.phoneNumber}
-                      onChange={handleInputChange}
-                      placeholder="Phone number"
-                      label="Phone"
-                    />
-                  </div>
 
                   {/* Email */}
                   <InputField

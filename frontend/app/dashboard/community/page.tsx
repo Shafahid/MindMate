@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { submitPeerPost, submitComment } from "@/lib/api/user_services";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
-import { Heart, ThumbsUp, MessageCircle, Clock, Users, Send, Plus } from "lucide-react";
+import { Heart, ThumbsUp, MessageCircle, Clock, Users, Send, Plus, MoreVertical, Trash2, Edit2 } from "lucide-react";
 
 const REACTION_EMOJIS = ["👍", "❤️", "😢", "😡"];
 
@@ -19,14 +19,65 @@ function CommunityPage() {
   const [comments, setComments] = useState<Record<string, Array<any>>>({});
   const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
   const [showPostForm, setShowPostForm] = useState(false);
+  // Edit states
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
+  const [editingPostContent, setEditingPostContent] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editingCommentContent, setEditingCommentContent] = useState("");
+  const [showPostMenuId, setShowPostMenuId] = useState<string | null>(null);
+  const [showCommentMenuId, setShowCommentMenuId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     async function fetchUser() {
       const { user } = await getCurrentUser();
       setUser(user);
+      if (user) {
+        // Fetch profile for first_name
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('first_name')
+          .eq('id', user.id)
+          .single();
+        setProfile(profileData);
+      }
     }
     fetchUser();
   }, []);
+  // Delete post
+  const handleDeletePost = async (postId: string) => {
+    await supabase.from('user_posts').delete().eq('id', postId);
+    setShowPostMenuId(null);
+    // Refresh posts
+    const { data, error } = await supabase
+      .from('user_posts')
+      .select('id, user_id, title, content, is_anonymous, created_at')
+      .order('created_at', { ascending: false });
+    if (!error && data) {
+      setPosts(data);
+    }
+    setFeedback('Post deleted!');
+  };
+
+  // Delete comment
+  const handleDeleteComment = async (commentId: string) => {
+    await supabase.from('user_comments').delete().eq('id', commentId);
+    setShowCommentMenuId(null);
+    // Refresh comments
+    const { data: commentsData } = await supabase
+      .from('user_comments')
+      .select('id, post_id, user_id, content, is_anonymous, created_at')
+      .order('created_at', { ascending: true });
+    const commentMap: Record<string, Array<any>> = {};
+    if (commentsData) {
+      commentsData.forEach((c: any) => {
+        if (!commentMap[c.post_id]) commentMap[c.post_id] = [];
+        commentMap[c.post_id].push(c);
+      });
+      setComments(commentMap);
+    }
+    setFeedback('Comment deleted!');
+  };
 
   useEffect(() => {
     async function fetchAll() {
@@ -181,6 +232,95 @@ function CommunityPage() {
     }
   };
 
+  // Edit post handler
+  const handleEditPost = (post: any) => {
+    setEditingPostId(post.id);
+    setEditingPostContent(post.content);
+    setError("");
+    setFeedback(null);
+  };
+
+  // Save edited post
+  const handleSaveEditPost = async (post: any) => {
+    setLoading(true);
+    setError("");
+    setFeedback(null);
+    if (!user) {
+      setError("You must be logged in to edit.");
+      setLoading(false);
+      return;
+    }
+    // Moderate updated post
+    const res = await submitPeerPost(editingPostContent, user.id);
+    setLoading(false);
+    if (res.error || res.status === "rejected") {
+      setError("Your update does not meet our community standards. Please rephrase and try again.");
+      return;
+    }
+    if (res.status === "accepted") {
+      await supabase.from("user_posts").update({ content: editingPostContent, title: editingPostContent.slice(0, 50) }).eq("id", post.id);
+      setEditingPostId(null);
+      setEditingPostContent("");
+      // Refresh posts
+      const { data, error } = await supabase
+        .from("user_posts")
+        .select("id, user_id, title, content, is_anonymous, created_at")
+        .order("created_at", { ascending: false });
+      if (!error && data) {
+        setPosts(data);
+      }
+      setFeedback("Post updated!");
+    }
+  };
+
+  // Edit comment handler
+  const handleEditComment = (comment: any) => {
+    setEditingCommentId(comment.id);
+    setEditingCommentContent(comment.content);
+    setError("");
+    setFeedback(null);
+  };
+
+  // Save edited comment
+  const handleSaveEditComment = async (comment: any) => {
+    if (!user) return;
+    // Moderate updated comment
+    const res = await submitComment(editingCommentContent, comment.post_id, user.id);
+    if (res.error || res.status === "rejected") {
+      setError("Your update does not meet our community standards. Please rephrase and try again.");
+      return;
+    }
+    if (res.status === "accepted") {
+      await supabase.from("user_comments").update({ content: editingCommentContent }).eq("id", comment.id);
+      setEditingCommentId(null);
+      setEditingCommentContent("");
+      // Refresh comments
+      const { data: commentsData } = await supabase
+        .from("user_comments")
+        .select("id, post_id, user_id, content, is_anonymous, created_at")
+        .order("created_at", { ascending: true });
+      const commentMap: Record<string, Array<any>> = {};
+      if (commentsData) {
+        commentsData.forEach((c: any) => {
+          if (!commentMap[c.post_id]) commentMap[c.post_id] = [];
+          commentMap[c.post_id].push(c);
+        });
+        setComments(commentMap);
+      }
+      setFeedback("Comment updated!");
+    }
+  };
+
+  // Cancel edit
+  const handleCancelEdit = () => {
+    setEditingPostId(null);
+    setEditingPostContent("");
+    setEditingCommentId(null);
+    setEditingCommentContent("");
+    setError("");
+    setFeedback(null);
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header Section */}
@@ -294,8 +434,37 @@ function CommunityPage() {
                       <span className="text-white font-bold text-sm">A</span>
                     </div>
                     <div>
-                      <div className="font-nohemi font-semibold text-gray-800">
-                        {post.is_anonymous ? "Anonymous" : "Community Member"}
+                      <div className="font-nohemi font-semibold text-gray-800 relative">
+                        {user && post.user_id === user.id
+                          ? `You (${profile?.first_name || 'User'})`
+                          : "Anonymous"}
+                        {/* Three-dot menu for own post */}
+                        {user && post.user_id === user.id && (
+                          <button
+                            className="ml-2 p-1 rounded-full hover:bg-violet-100"
+                            onClick={() => setShowPostMenuId(showPostMenuId === post.id ? null : post.id)}
+                            aria-label="Post menu"
+                          >
+                            <MoreVertical className="w-5 h-5 text-violet-700" />
+                          </button>
+                        )}
+                        {/* Removed extra edit button for own post, only three-dot menu is shown */}
+                        {showPostMenuId === post.id && (
+                          <div className="absolute z-10 right-0 mt-2 bg-white border border-violet-200 rounded-xl shadow-lg py-2 w-32">
+                            <button
+                              className="flex items-center gap-2 px-4 py-2 w-full hover:bg-violet-50 text-violet-700"
+                              onClick={() => { setShowPostMenuId(null); handleEditPost(post); }}
+                            >
+                              <Edit2 className="w-4 h-4" /> Edit
+                            </button>
+                            <button
+                              className="flex items-center gap-2 px-4 py-2 w-full hover:bg-red-50 text-red-600"
+                              onClick={() => handleDeletePost(post.id)}
+                            >
+                              <Trash2 className="w-4 h-4" /> Delete
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="flex items-center gap-2 text-xs text-gray-500">
                         <Clock className="w-3 h-3" />
@@ -308,9 +477,33 @@ function CommunityPage() {
 
               {/* Post Content */}
               <div className="p-6">
-                <div className="text-gray-800 font-nohemi leading-relaxed mb-4">
-                  {post.content}
-                </div>
+                {/* Edit post UI for owner */}
+                {user && post.user_id === user.id && editingPostId === post.id ? (
+                  <div className="mb-4">
+                    <textarea
+                      className="w-full border-2 border-violet-200 rounded-xl px-4 py-3 font-nohemi focus:outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100 bg-white/70 backdrop-blur-sm shadow-sm resize-none mb-2"
+                      rows={4}
+                      value={editingPostContent}
+                      onChange={e => setEditingPostContent(e.target.value)}
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-nohemi font-semibold shadow-lg hover:from-emerald-600 hover:to-emerald-700"
+                        onClick={() => handleSaveEditPost(post)}
+                        disabled={loading || !editingPostContent.trim()}
+                      >Save</button>
+                      <button
+                        className="px-4 py-2 bg-white border border-gray-300 rounded-xl font-nohemi font-medium text-gray-700 hover:bg-gray-50"
+                        onClick={handleCancelEdit}
+                      >Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-gray-800 font-nohemi leading-relaxed mb-4">
+                    {post.content}
+                  </div>
+                )}
+                {/* Removed extra edit button for own post. Only three-dot menu is used. */}
 
                 {/* Reactions */}
                 <div className="flex gap-2 mb-4">
@@ -369,11 +562,67 @@ function CommunityPage() {
                             <span className="text-white font-bold text-xs">A</span>
                           </div>
                           <div className="flex-1">
-                            <div className="text-sm font-nohemi text-gray-800 leading-relaxed">
-                              {comment.content}
-                            </div>
+                            {/* Edit comment UI for owner */}
+                            {user && comment.user_id === user.id && editingCommentId === comment.id ? (
+                              <div className="mb-2">
+                                <textarea
+                                  className="w-full border-2 border-violet-200 rounded-xl px-3 py-2 font-nohemi text-sm focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 bg-white mb-2"
+                                  rows={2}
+                                  value={editingCommentContent}
+                                  onChange={e => setEditingCommentContent(e.target.value)}
+                                />
+                                <div className="flex gap-2">
+                                  <button
+                                    className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-nohemi font-semibold shadow-lg hover:from-emerald-600 hover:to-emerald-700"
+                                    onClick={() => handleSaveEditComment(comment)}
+                                    disabled={!editingCommentContent.trim()}
+                                  >Save</button>
+                                  <button
+                                    className="px-3 py-1 bg-white border border-gray-300 rounded-xl font-nohemi font-medium text-gray-700 hover:bg-gray-50"
+                                    onClick={handleCancelEdit}
+                                  >Cancel</button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="text-sm font-nohemi text-gray-800 leading-relaxed">
+                                {comment.content}
+                              </div>
+                            )}
+                            {/* Three-dot menu for own comment, aligned at end */}
+                            {user && comment.user_id === user.id && (
+                              <div className="relative flex justify-end items-center" style={{ minHeight: '32px' }}>
+                                <button
+                                  className="p-1 rounded-full hover:bg-violet-100"
+                                  onClick={() => setShowCommentMenuId(showCommentMenuId === comment.id ? null : comment.id)}
+                                  aria-label="Comment menu"
+                                  style={{ marginLeft: 'auto' }}
+                                >
+                                  <MoreVertical className="w-4 h-4 text-violet-700" />
+                                </button>
+                                {showCommentMenuId === comment.id && (
+                                  <div className="absolute z-10 right-0 mt-2 bg-white border border-violet-200 rounded-xl shadow-lg py-2 w-28">
+                                    <button
+                                      className="flex items-center gap-2 px-4 py-2 w-full hover:bg-violet-50 text-violet-700"
+                                      onClick={() => { setShowCommentMenuId(null); handleEditComment(comment); }}
+                                    >
+                                      <Edit2 className="w-4 h-4" /> Edit
+                                    </button>
+                                    <button
+                                      className="flex items-center gap-2 px-4 py-2 w-full hover:bg-red-50 text-red-600"
+                                      onClick={() => handleDeleteComment(comment.id)}
+                                    >
+                                      <Trash2 className="w-4 h-4" /> Delete
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-xs text-gray-500 font-nohemi">Anonymous</span>
+                              <span className="text-xs text-gray-500 font-nohemi">
+                                {user && comment.user_id === user.id
+                                  ? `You (${profile?.first_name || 'User'})`
+                                  : "Anonymous"}
+                              </span>
                               <span className="text-xs text-gray-400">•</span>
                               <span className="text-xs text-gray-400">
                                 {new Date(comment.created_at).toLocaleDateString()}

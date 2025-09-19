@@ -3,12 +3,20 @@ import { supabase } from './supabase'
 
 type SupabaseResult<T = any> = Promise<{ data?: T; error?: any }>
 // Sign up
-export const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+export const signUp = async (
+  email: string,
+  password: string,
+  firstName?: string,
+  lastName?: string
+) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { first_name: firstName || '', last_name: lastName || '' }
+      data: {
+        first_name: firstName || '',
+        last_name: lastName || ''
+      }
     }
   })
   return { data, error }
