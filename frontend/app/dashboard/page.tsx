@@ -244,6 +244,19 @@ export default function DashboardPage() {
     )
   }
 
+  if (!loading && moodEntries.length === 0) {
+    return (
+      <main className="max-w-7xl mx-auto space-y-4 p-6">
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <img src="/mindmate.png" alt="MindMate" width={120} height={120} className="mb-6 rounded-2xl border-2 border-violet-400" />
+          <h2 className="text-3xl font-bold font-nohemi text-violet-700 mb-2 text-center">Welcome to MindMate!</h2>
+          <p className="text-gray-600 font-nohemi text-lg mb-4 text-center">You haven't logged any moods yet.</p>
+          <p className="text-gray-500 font-nohemi text-center">Start by logging your mood today to unlock personalized insights, recommendations, and self-care tools.</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="max-w-7xl mx-auto space-y-4 p-6">
       {/* Welcome Header */}

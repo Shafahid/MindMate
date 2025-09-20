@@ -42,8 +42,10 @@ async def chat_voice(file: UploadFile = File(...), user_id: Optional[str] = None
                 detail="Message flagged as toxic. Please rephrase."
             )
 
-        # Step 3: Generate AI response
-        ai_response = await get_gemini_response(transcribed_text, user_id)
+        # Step 3: Generate AI response (wrap transcribed text as message list)
+        ai_response = await get_gemini_response(
+            [{"sender": "user", "text": transcribed_text}], user_id
+        )
 
         return VoiceChatResponse(
             chat_id=str(uuid.uuid4()),

@@ -1,136 +1,390 @@
+# 🧠 MindMate — Modern Mental Health Companion
 
-# MindMate
+<div align="center">
+	<img src="ScreenShot/mindmate.png" alt="MindMate Logo" width="600" />
+	<br />
+	<b>A comprehensive mental health platform for mood tracking, community support, and AI-powered wellness recommendations.</b>
+</div>
 
-MindMate is a full-stack mental health companion platform designed to help users track moods, chat with an AI, connect with a supportive community, and access self-care tools. Built for privacy, safety, and engagement.
-
----
-
-## Features
-
-- **Mood Tracking**: Log daily moods (positive, neutral, negative) and visualize trends, heatmaps, and statistics.
-- **AI Chatbot**: Context-aware chatbot for support, advice, and conversation. Supports text and voice input, with Markdown rendering for AI responses.
-- **Voice Messaging**: Record, playback, and send voice messages to the chatbot. Transcription and AI response included.
-- **Community Peer Posts**: Share anonymous posts, comment, react, and connect with others. All content is moderated for safety.
-- **Comment Moderation**: Comments are checked for safety and community standards before posting.
-- **Dashboard Analytics**: View mood stats, motivational quotes, and personalized recommendations based on your data.
-- **Self-Help Toolkit**: Breathing exercises, meditation, journaling, and more.
-- **Authentication**: Secure signup/signin with Supabase. Only first/last name, email, and password required.
-- **Edit/Delete**: Users can edit or delete their own posts/comments.
-- **Error Feedback**: Clear error messages for forbidden content or moderation issues.
-- **Logout & Profile**: Proper sign out and profile management.
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-DB-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-316192?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Transformers-yellow?style=for-the-badge&logo=huggingface)](https://huggingface.co/)
 
 ---
 
+## 📸 Features & Screenshots
 
-## Tech Stack
-
-- **Frontend**: Next.js (React), TypeScript, Recharts, ReactMarkdown, Supabase JS, Tailwind CSS
-- **Backend**: FastAPI, SQLModel, Alembic, Supabase/PostgreSQL, Redis (caching), Hugging Face Inference API
-- **Database**: Supabase/PostgreSQL
-- **Auth**: Supabase Auth
-- **Deployment**: Docker, Docker Compose
+<div align="center">
+<table>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/dashboard.png" /><br />
+			<b>Dashboard</b><br />
+			<div style="margin-top: 8px;">Recommendations, heatmap, mood tracking graph</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/moodlog.png" /><br />
+			<b>Mood Tracking</b><br />
+			<div style="margin-top: 8px;">Log daily moods, view trends, heatmaps, and stats</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/chatbotresponse.PNG" /><br />
+			<b>AI Chatbot</b><br />
+			<div style="margin-top: 8px;">Context-aware, text & voice, Markdown rendering</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/moodkit.png" /><br />
+			<b>Self-Help Toolkit</b><br />
+			<div style="margin-top: 8px;">Breathing, meditation, journaling</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/posts.png" /><br />
+			<b>Community Posts</b><br />
+			<div style="margin-top: 8px;">Share, comment, react - all content safety-checked</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/comments.PNG" /><br />
+			<b>Comments & Moderation</b><br />
+			<div style="margin-top: 8px;">Safety checks before posting, error feedback</div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/profile.png" /><br />
+			<b>User Profile</b><br />
+			<div style="margin-top: 8px;">Manage profile, sign out securely</div>
+		</td>
+	</tr>
+</table>
+</div>
 
 ---
 
-## Hugging Face Models Used
+## ✨ Key Features
 
-### Moderation (Toxicity/Hate Speech)
-- `unitary/toxic-bert`
-- `Hate-speech-CNERG/bert-base-uncased-hate-speech`
-- `Hate-speech-CNERG/dehatebert-mono-english`
-- `cointegrated/rubert-toxic-pikabu`
+### 🎯 Core Functionality
+- **Smart Mood Tracking** — Visual analytics with weekly/monthly trends and interactive heatmaps
+- **AI-Powered Chatbot** — Context-aware conversations with text & voice support
+- **Safe Community Hub** — Moderated posts, comments, and reactions with real-time safety checks
+- **Wellness Toolkit** — Guided breathing exercises, meditation sessions, and journaling prompts
 
-### Sentiment/Mood Analysis
-- `distilroberta-base`
-- `cardiffnlp/twitter-roberta-base-sentiment`
-- `finiteautomata/bertweet-base-sentiment-analysis`
+### 🔒 Security & Safety
+- **Content Moderation** — AI-powered toxicity detection before posting
+- **Secure Authentication** — Supabase-powered user management
+- **Privacy First** — Anonymous posting options and data protection
 
-### Chatbot Fallback
-- `tiiuae/falcon-7b-instruct`
-- `facebook/blenderbot-3B`
-- `gpt2`
-
-### Voice Transcription
-- `openai/whisper-large-v3-turbo`
+### 💡 Smart Features
+- **Personalized Dashboard** — AI recommendations based on mood patterns
+- **Voice Integration** — Speech-to-text messaging with audio playback
+- **Real-time Analytics** — Interactive charts and mood visualization
+- **Mobile-Optimized** — Responsive design for all devices
 
 ---
 
-## Data Models
+## 🧱 Technology Stack
 
-### mood_entries
-```sql
-create table mood_entries (
-	id uuid primary key default gen_random_uuid(),
-	user_id uuid references profiles(id) on delete cascade,
-	mood_value text not null check (mood_value in ('positive', 'neutral', 'negative')),
-	created_at date default current_date
-);
+<div align="center">
+<table>
+	<tr>
+		<th align="center">🎨 Frontend</th>
+		<th align="center">⚙️ Backend</th>
+		<th align="center">🗄️ Database</th>
+		<th align="center">🤖 AI/ML</th>
+	</tr>
+	<tr>
+		<td align="center">
+			<strong>Next.js 15</strong><br/>
+			React 18<br/>
+			TypeScript<br/>
+			Tailwind CSS<br/>
+			Recharts
+		</td>
+		<td align="center">
+			<strong>FastAPI</strong><br/>
+			Python 3.11+<br/>
+			SQLModel<br/>
+			Alembic<br/>
+			Uvicorn
+		</td>
+		<td align="center">
+			<strong>PostgreSQL 15</strong><br/>
+			Supabase<br/>
+			Redis Cache<br/>
+			Real-time sync
+		</td>
+		<td align="center">
+			<strong>Google Gemini</strong><br/>
+			Hugging Face<br/>
+			OpenAI Whisper<br/>
+			Content Moderation
+		</td>
+	</tr>
+</table>
+</div>
+
+---
+
+## ⚡ Getting Started
+
+### Prerequisites
+
+- Python 3.11+
+- Node.js 18+
+- PostgreSQL 15+
+- Git
+
+### Setup
+
+```bash
+git clone https://github.com/yourusername/MindMate.git
+cd MindMate
 ```
 
-### profiles
-```sql
-create table profiles (
-	id uuid primary key,
-	first_name text,
-	last_name text,
-	email text unique,
-	created_at timestamp default now()
-);
+#### Backend (.env)
+```env
+SUPABASE_URL="https://<your-supabase-project>.supabase.co"
+SUPABASE_KEY="<your-supabase-key>"
+HF_API_KEY=<your-huggingface-key>
+GEMINI_API_KEY=<your-gemini-key>
 ```
 
-### user_posts, user_comments, post_reactions
-*Standard community tables for posts, comments, and reactions, all linked to profiles and moderated before insert.*
+#### Frontend (.env)
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<your-supabase-project>.supabase.co
+NEXT_PUBLIC_SUPABASE_KEY=<your-supabase-key>
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+```
+
+#### Backend Setup
+```bash
+cd backend
+python -m venv env
+env\Scripts\activate  # Windows
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+#### Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-## API Endpoints
+## 📁 Project Structure
 
-- `POST /peer` — Submit anonymous post (moderated)
-- `POST /mood` — Submit mood (emoji/text/slider)
-- `GET /mood/history` — Get weekly/monthly mood history
-- `POST /comment` — Submit moderated comment
-- `POST /chat` — Send chat messages (context-aware)
-- `POST /chat/voice` — Send voice message for transcription and AI response
-
----
-
-## Setup & Installation
-
-### Backend
-1. Copy `.env.example` to `.env` and fill in secrets (Supabase, Hugging Face, Redis).
-2. Build and run:
-   ```powershell
-   docker-compose up --build
-   ```
-3. API available at `http://localhost:8000`
-
-### Frontend
-1. Install dependencies:
-   ```powershell
-   cd frontend
-   npm install
-   npm run dev
-   ```
-2. App available at `http://localhost:3000`
+```text
+MindMate/
+├── frontend/         # Next.js Frontend
+│   ├── app/          # App Router Pages
+│   ├── components/   # Reusable Components
+│   ├── lib/          # API Service Layer
+│   └── public/       # Static Assets
+├── backend/          # FastAPI Backend
+│   ├── app/          # Source Code
+│   │   ├── api/      # API Endpoints
+│   │   ├── models/   # Database Models
+│   │   ├── services/ # Business Logic
+│   │   └── core/     # Config & Utilities
+│   ├── alembic/      # DB Migrations
+│   └── requirements.txt
+├── ScreenShot/       # Screenshots
+└── README.md
+```
 
 ---
 
-## Usage
+## 🔗 API Endpoints
 
-- Sign up or sign in with email and password.
-- Log your mood daily and view analytics on the dashboard.
-- Chat with the AI via text or voice.
-- Post anonymously, comment, and react in the community.
-- Use self-help tools for journaling, breathing, and meditation.
+<div align="center">
+<table>
+	<tr>
+		<th align="center">🌐 Endpoint</th>
+		<th align="center">📝 Method</th>
+		<th align="center">📋 Description</th>
+		<th align="center">🔒 Features</th>
+	</tr>
+	<tr>
+		<td><code>/peer</code></td>
+		<td><strong>POST</strong></td>
+		<td>Submit anonymous community post</td>
+		<td>AI moderation, toxicity detection</td>
+	</tr>
+	<tr>
+		<td><code>/mood</code></td>
+		<td><strong>POST</strong></td>
+		<td>Log daily mood entry</td>
+		<td>Emoji, text, slider input methods</td>
+	</tr>
+	<tr>
+		<td><code>/mood/history</code></td>
+		<td><strong>GET</strong></td>
+		<td>Retrieve mood analytics</td>
+		<td>Weekly/monthly trends, heatmaps</td>
+	</tr>
+	<tr>
+		<td><code>/comment</code></td>
+		<td><strong>POST</strong></td>
+		<td>Add moderated comment</td>
+		<td>Real-time safety checks</td>
+	</tr>
+	<tr>
+		<td><code>/chat</code></td>
+		<td><strong>POST</strong></td>
+		<td>Send AI chatbot message</td>
+		<td>Context-aware, Gemini-powered</td>
+	</tr>
+	<tr>
+		<td><code>/chat/voice</code></td>
+		<td><strong>POST</strong></td>
+		<td>Voice message transcription</td>
+		<td>Speech-to-text, AI response</td>
+	</tr>
+</table>
+</div>
+
+### 🛡️ Security Features
+- **Content Moderation**: All posts and comments filtered through AI toxicity detection
+- **Rate Limiting**: API endpoint protection against abuse
+- **Authentication**: Secure user sessions via Supabase
+- **Data Validation**: Input sanitization and validation on all endpoints
 
 ---
 
-## Contributing
+## 🤖 AI Models & APIs
 
-Pull requests and issues are welcome! Please open an issue for bugs or feature requests.
+<div align="center">
+<table>
+	<tr>
+		<th align="center">🎯 Category</th>
+		<th align="center">🤖 Model/API</th>
+		<th align="center">📝 Purpose</th>
+		<th align="center">🔗 Link</th>
+	</tr>
+	<tr>
+		<td rowspan="1"><strong>Primary AI</strong></td>
+		<td>Google Gemini API</td>
+		<td>Main conversational AI for intelligent responses</td>
+		<td><a href="https://ai.google.dev/">🔗 Gemini</a></td>
+	</tr>
+	<tr>
+		<td rowspan="4"><strong>Content Moderation</strong></td>
+		<td>unitary/toxic-bert</td>
+		<td>Toxicity detection</td>
+		<td><a href="https://huggingface.co/unitary/toxic-bert">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>Hate-speech-CNERG/bert-base-uncased-hate-speech</td>
+		<td>Hate speech classification</td>
+		<td><a href="https://huggingface.co/Hate-speech-CNERG/bert-base-uncased-hate-speech">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>Hate-speech-CNERG/dehatebert-mono-english</td>
+		<td>Advanced hate speech detection</td>
+		<td><a href="https://huggingface.co/Hate-speech-CNERG/dehatebert-mono-english">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>cointegrated/rubert-toxic-pikabu</td>
+		<td>Multilingual toxicity detection</td>
+		<td><a href="https://huggingface.co/cointegrated/rubert-toxic-pikabu">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td rowspan="3"><strong>Sentiment Analysis</strong></td>
+		<td>distilroberta-base</td>
+		<td>General sentiment classification</td>
+		<td><a href="https://huggingface.co/distilroberta-base">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>cardiffnlp/twitter-roberta-base-sentiment</td>
+		<td>Social media sentiment analysis</td>
+		<td><a href="https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>finiteautomata/bertweet-base-sentiment-analysis</td>
+		<td>Tweet sentiment classification</td>
+		<td><a href="https://huggingface.co/finiteautomata/bertweet-base-sentiment-analysis">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td rowspan="3"><strong>Fallback Chatbots</strong></td>
+		<td>tiiuae/falcon-7b-instruct</td>
+		<td>Instruction-following conversations</td>
+		<td><a href="https://huggingface.co/tiiuae/falcon-7b-instruct">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>facebook/blenderbot-3B</td>
+		<td>Open-domain conversations</td>
+		<td><a href="https://huggingface.co/facebook/blenderbot-3B">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td>gpt2</td>
+		<td>General text generation</td>
+		<td><a href="https://huggingface.co/gpt2">🔗 HF</a></td>
+	</tr>
+	<tr>
+		<td rowspan="1"><strong>Voice Processing</strong></td>
+		<td>openai/whisper-large-v3-turbo</td>
+		<td>Speech-to-text transcription</td>
+		<td><a href="https://huggingface.co/openai/whisper-large-v3-turbo">🔗 HF</a></td>
+	</tr>
+</table>
+</div>
+
+### 🛡️ AI Safety Pipeline
+- **Multi-layer Moderation**: Content passes through multiple toxicity detection models
+- **Real-time Processing**: Instant safety checks before posting
+- **Adaptive Learning**: Models continuously improve based on community feedback
+- **Fallback Systems**: Multiple AI models ensure service reliability
 
 ---
 
-## License
+## 👥 Team
 
-MIT
+<div align="center">
+<table>
+	<tr>
+		<td align="center">
+			<img src="ScreenShot/mehedi.jpg" width="100px" style="border-radius: 50%; object-fit: cover;"/>
+			<br /><b>H.M. Mehedi Hasan</b><br />Backend Developer
+		</td>
+		<td align="center">
+			<img src="ScreenShot/abs.jpg" width="100px" style="border-radius: 50%; object-fit: cover;"/>
+			<br /><b>Abu Bakar Siddique</b><br />Frontend Developer
+		</td>
+		<td align="center">
+			<img src="ScreenShot/Shafahid.jpg" width="100px" style="border-radius: 50%; object-fit: cover;"/>
+			<br /><b>Shafahid</b><br />Database Developer
+		</td>
+	</tr>
+</table>
+</div>
+
+---
+
+## 🌟 Show Your Support
+
+<div align="center">
+If you find MindMate helpful, please consider:
+<br />
+⭐ <b>Star</b> the repository | 🍴 <b>Fork</b> the project | 📢 <b>Share</b> with others | 🤝 <b>Contribute</b> code
+<br /><br />
+<b>Built with ❤️ for mental health and wellbeing</b>
+<br />
+<i>Making mental health support simple, safe, and beautiful</i>
+</div>
+
+---

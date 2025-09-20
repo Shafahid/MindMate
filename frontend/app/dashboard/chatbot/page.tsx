@@ -76,10 +76,14 @@ function ChatbotPage() {
     if (res.error) {
       setError(res.error);
     } else {
+      // Only show the first MindMate response (first non-empty line)
+      let aiText = res.ai_response || "";
+      const lines = aiText.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+      const firstResponse = lines.length > 0 ? lines[0] : aiText;
       setMessages((prev) => [
         ...prev,
         { sender: "user", text: res.transcribed_text || "[Voice]" },
-        { sender: "ai", text: res.ai_response || "" },
+        { sender: "ai", text: firstResponse },
       ]);
     }
     setAudioBlob(null);
