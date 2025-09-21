@@ -20,6 +20,7 @@
 
 - **Frontend (Next.js)**: [MindMate Frontend](https://mind-mate-sepia.vercel.app/)  
 - **Backend API (FastAPI)**: [MindMate API](https://mindmate-xzqc.onrender.com)
+- **Demo Video**: [MindMate Demo](https://youtu.be/pwKp3CORFaM)
 
 ---
 
