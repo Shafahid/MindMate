@@ -1,7 +1,7 @@
 # 🧠 MindMate — Modern Mental Health Companion
 
 <div align="center">
-	<img src="ScreenShot/mindmate.png" alt="MindMate Logo" width="600" />
+	<img src="ScreenShot/home.PNG" alt="MindMate Logo" width="600" />
 	<br />
 	<b>A comprehensive mental health platform for mood tracking, community support, and AI-powered wellness recommendations.</b>
 </div>
