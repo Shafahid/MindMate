@@ -21,6 +21,13 @@
 <table>
 	<tr>
 		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
+			<img src="ScreenShot/home.PNG" /><br />
+			<b>Landing Page</b><br />
+			<div style="margin-top: 8px;"></div>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="3" style="padding: 24px 0; vertical-align: top;">
 			<img src="ScreenShot/dashboard.png" /><br />
 			<b>Dashboard</b><br />
 			<div style="margin-top: 8px;">Recommendations, heatmap, mood tracking graph</div>
