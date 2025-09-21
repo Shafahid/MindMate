@@ -15,6 +15,14 @@
 
 ---
 
+
+## 🚀 Live Demo
+
+- **Frontend (Next.js)**: [MindMate Frontend](https://mind-mate-sepia.vercel.app/)  
+- **Backend API (FastAPI)**: [MindMate API](https://mindmate-xzqc.onrender.com)
+
+---
+
 ## 📸 Features & Screenshots
 
 <div align="center">
