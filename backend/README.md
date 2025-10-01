@@ -3,8 +3,6 @@
 ## Features
 - FastAPI backend for mental health companion
 - SQLModel ORM for Supabase/PostgreSQL
-- Alembic migrations
-- Redis caching for inference API calls
 - Hugging Face Inference API for moderation & mood analysis
 - Modular, maintainable structure
 - Dockerized for hackathon/demo
@@ -51,15 +49,8 @@ README.md
 - `GET /mood/history` — get weekly/monthly mood history
 - `GET /moderation/logs/{post_id}` — moderation transparency
 
-## Alembic Migrations
-- Edit models in `app/models.py`
-- Run migrations:
-  ```powershell
-  alembic revision --autogenerate -m "init"
-  alembic upgrade head
-  ```
+
 
 ## Notes
 - Hugging Face API key required for moderation/sentiment
 - Supabase/PostgreSQL required for DB
-- Redis required for caching
