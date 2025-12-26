@@ -351,6 +351,7 @@ export default function DashboardPage() {
             <TrendingUp className="w-6 h-6" />
             Mood Trend (30 Days)
           </h3>
+          {chartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -373,6 +374,15 @@ export default function DashboardPage() {
               />
             </LineChart>
           </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-[300px]">
+              <div className="text-center">
+                <TrendingUp className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 font-nohemi">No trend data available</p>
+                <p className="text-sm text-gray-400 font-nohemi mt-2">Log moods over time to see your trend</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mood Distribution */}
@@ -381,6 +391,8 @@ export default function DashboardPage() {
             <Brain className="w-6 h-6" />
             Mood Distribution
           </h3>
+          {pieData.some(d => d.value > 0) ? (
+            <>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -407,6 +419,16 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center h-[300px]">
+              <div className="text-center">
+                <Brain className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 font-nohemi">No distribution data available</p>
+                <p className="text-sm text-gray-400 font-nohemi mt-2">Start tracking to see your mood breakdown</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -417,8 +439,9 @@ export default function DashboardPage() {
           Mood Calendar (Past 30 Days)
         </h3>
         <div className="w-full px-4">
-          <ActivityCalendar
-            data={heatmapData}
+          {heatmapData.length > 0 ? (
+            <ActivityCalendar
+              data={heatmapData}
             colorScheme="light"
             theme={{
               light: ['#ebedf0', '#fca5a5', '#fde047', '#86efac', '#22c55e'],
@@ -440,7 +463,16 @@ export default function DashboardPage() {
             blockMargin={4}
             fontSize={14}
           />
+          ) : (
+            <div className="text-center py-12">
+              <CalendarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 font-nohemi">No mood entries to display yet</p>
+              <p className="text-sm text-gray-400 font-nohemi mt-2">Start logging your mood to see your calendar heat map</p>
+            </div>
+          )}
         </div>
+        {heatmapData.length > 0 && (
+          <>
         <div className="text-xs text-gray-500 font-nohemi mt-6 text-center">
           Track your daily mood patterns - Each square represents a day
         </div>
@@ -467,6 +499,8 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+          </>
+        )}
       </div>
 
       {/* Quick Actions */}

@@ -1,0 +1,65 @@
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mindmate-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - ENVIRONMENT=development
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+    depends_on:
+      - redis
+    networks:
+      - mindmate-network
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    container_name: mindmate-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    depends_on:
+      - backend
+    networks:
+      - mindmate-network
+    restart: unless-stopped
+
+  # Redis Service (for caching and sessions)
+  redis:
+    image: redis:7-alpine
+    container_name: mindmate-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mindmate-network
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+
+networks:
+  mindmate-network:
+    driver: bridge
+
+volumes:
+  redis-data:
